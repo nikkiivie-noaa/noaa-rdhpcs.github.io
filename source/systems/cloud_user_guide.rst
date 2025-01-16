@@ -3581,3 +3581,33 @@ marketplace first. Publishing to the marketplace is also a good way to
 version control the cluster definitions anyway, so it might be good
 for backing up the configuration data somewhere. You can publish resources
 to the marketplace from `here <https://noaa.parallel.works/market/publish>`__
+
+**Why is the remote desktop showing multiple xterm terminals, and
+/or xclocks?**
+
+When the $HOME/.vnc/xstartup file is messed up, this issue can appear.
+edit the file to keep the following lines:
+#!/bin/sh
+unset SESSION_MANAGER
+unset DBUS_SESSION_BUS_ADDRESS
+/etc/X11/xinit/xinitrc
+
+If user doesn't want xclock or the terminal to start automatically, can reset
+by running:
+
+touch ~/.Xclients
+
+**What causes a PW session status as running is no longer accessible via
+the IP address, and the logs do not show any issues?**
+
+This issue typically occurs when the system runs out of resources, usually due
+to an out of memory situation. The display rolls back to requested since the
+instance is no longer reachable, and it's waiting for status updates from the
+instance. Sometimes the out of memory killer will kick in and clean up some
+processes to allow the system to continue functioning, but this event is not
+guaranteed to clean up quickly, or to leave the system in a functional state
+after cleanup when it does run.
+
+To work around this, increase the size of the instance, or add a compute
+partition and send the work off to worker nodes, if your workflow allows.
+
